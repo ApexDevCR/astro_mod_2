@@ -1,0 +1,157 @@
+---
+import { Picture } from 'astro:assets';
+import banner_stars from '../../assets/icons/strs_grp.png'
+
+import slide1 from '../../assets/images/bnnr_sldr_card_1.png';
+import slide2 from '../../assets/images/bnnr_sldr_card_2.png';
+import slide3 from '../../assets/images/bnnr_sldr_card_3.png';
+
+const slides = [
+  { image: slide1, text: 'book 1' },
+  { image: slide2, text: 'book 2' },
+  { image: slide3, text: 'book 3'},
+];
+---
+
+<div class="banner-slider-wrap">
+  <div class="swiper banner_card_slider">
+    <div class="swiper-wrapper">
+      {slides.map((slide) => (
+        <div class="swiper-slide">
+          <div class="slide-card">
+              <Picture src={slide.image} alt={slide.text} formats={['avif', 'webp']} widths={[320, 450, 499]} sizes="(max-width: 767px) 320px, 450px" priority={true}/>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+  <div class="bnnr_strs">
+    <Picture src={banner_stars} loading="eager" formats={['avif', 'webp']} alt="stars group" />
+  </div>
+</div>
+
+<script>
+  // This carousel is above the fold, so we still want it interactive
+  // quickly — but we defer both the Swiper JS AND its CSS until idle
+  // time, so neither competes with the hero image for the main thread
+  // or the render-blocking critical path during the LCP window.
+  //
+  // The CSS file URLs are resolved at build time via Vite's `?url`
+  // suffix (a literal string import, not a side-effecting stylesheet
+  // import), then injected as real <link> elements only once this
+  // carousel actually initializes. This avoids two problems: (a) a
+  // static `import 'swiper/css'` would put this non-critical CSS in
+  // <head> as render-blocking, and (b) a dynamic `import('swiper/css')`
+  // is unreliable, since Vite may merge multiple swiper/css/* imports
+  // into a single combined chunk at build time, and the generated
+  // hashed filename can then mismatch what the dynamic import() call
+  // requests at runtime, producing 404s and breaking the carousel.
+  import swiperCssUrl from 'swiper/css?url';
+  import effectCardsCssUrl from 'swiper/css/effect-cards?url';
+
+  function loadSwiperCSS() {
+    if (document.querySelector('link[data-swiper-banner-css]')) return;
+    [swiperCssUrl, effectCardsCssUrl].forEach((href) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = href;
+      link.setAttribute('data-swiper-banner-css', '');
+      document.head.appendChild(link);
+    });
+  }
+
+  async function initBannerSlider() {
+    loadSwiperCSS();
+    const [{ default: Swiper }, { EffectCards }] = await Promise.all([
+      import('swiper'),
+      import('swiper/modules'),
+    ]);
+
+    new Swiper('.banner_card_slider', {
+      modules: [EffectCards],
+      effect: 'cards',
+      grabCursor: true,
+      loop: false,
+      cardsEffect: {
+        perSlideOffset: 1,
+        perSlideRotate: 6,
+      },
+      breakpoints: {
+        767: {
+          cardsEffect: {
+            perSlideOffset: 1,
+            perSlideRotate: 10,
+          },
+        },
+      },
+    });
+  }
+
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => initBannerSlider(), { timeout: 1500 });
+  } else {
+    // Safari/older browsers: small timeout fallback so it still
+    // runs after the initial paint rather than blocking it.
+    setTimeout(initBannerSlider, 200);
+  }
+</script>
+
+<style is:global>
+      .bnnr_sldr_wrp{
+      flex-grow: 1;
+      align-self: flex-end;
+    }
+    .banner_card_slider{
+        width: 450px;
+    }
+    .slide-card a{
+      display: block;
+    }
+    .slide-card a img{
+      width: 100%;
+    }
+
+    .banner-slider-wrap{
+      position: relative;
+    }
+    .banner_card_slider  .swiper-slide:not(.swiper-slide-active) .slide-card{
+      filter: blur(5px);
+      pointer-events: none;
+    }
+    .bnnr_strs {
+        position: absolute;
+        top: -150px;
+        left: 20px;
+    }
+
+        /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 1900px) {
+
+      .banner_card_slider {
+          width: 320px;
+          margin-bottom: 60px;
+      }
+      .bnnr_strs {
+          position: absolute;
+          top: -60px;
+          left: -30px;
+          right: -30px;
+      }
+
+    }
+    @media (max-width: 767px) {
+    .banner_card_slider {
+      margin-bottom: 0;
+      width: 240px;
+    }
+    .bnnr_strs {
+      top: -40px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+    }
+
+</style>
