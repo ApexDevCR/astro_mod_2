@@ -8,6 +8,11 @@ import '../styles/components.css';
 import fab from '../../public/fabic.png';
 import ogimg from '../assets/images/logo.png'
 
+import OswaldRegular from '../assets/fonts/Oswald-Regular.woff2?url';
+import RobotoRegular from '../assets/fonts/Roboto-Regular.woff2?url';
+import OswaldBold from '../assets/fonts/Oswald-Bold.woff2?url';
+import RobotoBold from '../assets/fonts/Roboto-Bold.woff2?url';
+
 interface Props {
   title?: string;
   description?: string;
@@ -30,6 +35,12 @@ const {
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- fonts preload-->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={OswaldRegular} />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={RobotoRegular} />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={OswaldBold} />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={RobotoBold} />
 
     <!-- Canonical -->
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />

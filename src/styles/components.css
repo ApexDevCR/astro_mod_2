@@ -86,8 +86,8 @@ a.logo {
 .section-title p { max-width: 780px; margin: 10px auto 0; }
 
 /* ── Banner Card Slider ──────────────────────────────────── */
-.bnnr_sldr_wrp { flex-grow: 1; align-self: flex-end; }
-.banner_card_slider { width: 450px; }
+.bnnr_sldr_wrp { flex-grow: 1; align-self: flex-end;min-height: 500px; }
+.banner_card_slider { width: 450px;min-height: 500px; }
 .slide-card a { display: block; }
 .slide-card a img { width: 100%; }
 .banner-slider-wrap { position: relative; }
@@ -97,11 +97,11 @@ a.logo {
 }
 .bnnr_strs { position: absolute; top: -150px; left: 20px; }
 @media (max-width: 1900px) {
-  .banner_card_slider { width: 320px; margin-bottom: 60px; }
+  .banner_card_slider { width: 320px;min-height: 480px; margin-bottom: 60px; }
   .bnnr_strs { position: absolute; top: -60px; left: -30px; right: -30px; }
 }
 @media (max-width: 767px) {
-  .banner_card_slider { margin-bottom: 0; width: 240px; }
+  .banner_card_slider { margin-bottom: 0; width: 240px;min-height: 350px; }
   .bnnr_strs { top: -40px; left: 0; right: 0; bottom: 0; max-width: 460px; margin: 0 auto; }
 }
 
