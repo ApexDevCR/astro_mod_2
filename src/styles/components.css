@@ -9,7 +9,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
 }
 .header-inner {
   padding: 24px 0;
@@ -87,7 +87,7 @@ a.logo {
 
 /* ── Banner Card Slider ──────────────────────────────────── */
 .bnnr_sldr_wrp { flex-grow: 1; align-self: flex-end; }
-.banner_card_slider { width: 450px;height: 675px; }
+.banner_card_slider { width: 450px;height: 675px;transition:100ms all ease-in-out; }
 .banner_card_slider .swiper-wrapper{display: flex;}
 .slide-card a { display: block; }
 .slide-card a img { width: 100%; }
@@ -95,6 +95,10 @@ a.logo {
 .banner_card_slider .swiper-slide:not(.swiper-slide-active) .slide-card {
   filter: blur(5px);
   pointer-events: none;
+}
+
+.banner_card_slider:not(.swiper-initialized){
+  opacity: 0;
 }
 .bnnr_strs { position: absolute; top: -150px; left: 20px; }
 @media (max-width: 1900px) {
@@ -334,6 +338,29 @@ a.logo {
   position: relative;
   overflow: hidden;
 }
+.bnnr_sec .bnnr_bg{
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -420px;
+  transform: translateX(-50%);
+  width: 1920px;
+  height: 100%;
+  pointer-events: none;
+}
+.bnnr_sec .bnnr_bg picture{
+  width: 100%;
+  height: 100%;
+}
+.bnnr_sec .bnnr_bg picture img{
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+}
+.bnnr_sec .container{
+  position: relative;
+  z-index: 1;
+}
 .bnnr_sec h2 { font-size: 25px; font-weight: 400; line-height: 32px; letter-spacing: 0.32em; margin-bottom: 20px; }
 .bnnr_sec h1 { margin-bottom: 30px; }
 .bnnr_sec p { font-size: 20px; margin-bottom: 30px; }
@@ -349,12 +376,14 @@ a.logo {
   .bnnr_sec { padding: 80px 0 40px; background-position: bottom left calc(50% - 250px); background-size: 1920px; }
   .bnr_cnct { padding-left: 20px; }
   .bbnr_mons img { width: 450px; }
+  .bnnr_sec .bnnr_bg{margin-left: -250px;}
 }
 @media (max-width: 1399px) { .btm_anim_wrp { margin-top: -20px; } }
 @media (max-width: 1199px) {
   .bnr_cnct { padding-left: 0; width: 570px; }
   .bnnr_sec { background-size: cover; background-position: bottom left calc(50% - 160px); }
   .btm_anim_wrp { display: none; }
+  .bnnr_sec .bnnr_bg{margin-left: -160px;}
 }
 @media (max-width: 991px) {
   .bnr_cnct { width: 100%; text-align: center; padding-bottom: 70px; position: relative; }
@@ -375,6 +404,7 @@ a.logo {
   .bnnr_bttns { gap: 12px; }
   .bnnr_bttns a { padding: 0 12px; }
   .bbnr_mons { margin-bottom: -275px; }
+  .bnnr_sec .bnnr_bg{margin-left: 0;}
 }
 
 /* ── Card Section (Books Section) ────────────────────────── */
@@ -412,7 +442,7 @@ a.logo {
 .volume-content { text-align: center; }
 .volume-content h4 { color: var(--color-white-100); font-size: 25px; font-weight: 300; line-height: 1.2; letter-spacing: 0.3em; text-transform: uppercase; }
 .volume-content h2 { margin-top: 15px; }
-.volume-content a { margin-top: 25px; }
+.volume-content button { margin-top: 25px; }
 @media (max-width: 1900px) {
   .volume-image { width: 540px; margin-bottom: -105px; }
   .volume-inner { padding: 0 20px 0 40px; }
