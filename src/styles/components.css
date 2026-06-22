@@ -98,7 +98,7 @@ a.logo {
 }
 .bnnr_strs { position: absolute; top: -150px; left: 20px; }
 @media (max-width: 1900px) {
-  .banner_card_slider { width: 320px;height: 545px; margin-bottom: 60px; }
+  .banner_card_slider { width: 320px;height: 480px; margin-bottom: 60px; }
   .bnnr_strs { position: absolute; top: -60px; left: -30px; right: -30px; }
 }
 @media (max-width: 767px) {
