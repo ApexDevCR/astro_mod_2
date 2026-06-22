@@ -1,7 +1,4 @@
 ---
-import { Picture } from 'astro:assets';
-import logo from '../../assets/images/logo.png';
-
 interface Props {
   name?: string;
   rightsText?: string;
@@ -13,8 +10,9 @@ const year = new Date().getFullYear();
 
 <div class="footer-top">
   <div class="container">
-    <a href="/" aria-label="Kevin Focke – home">
-      <Picture src={logo} alt="Kevin Focke logo"  formats={['avif', 'webp']} />
+    <a href="/" aria-label="Kevin Focke – home" class="logo">
+      <span>Kevin Focke [fˈa͡ʊlki]</span>
+    </a>
     </a>
     <p>© {year} {name}. {rightsText}</p>
   </div>
