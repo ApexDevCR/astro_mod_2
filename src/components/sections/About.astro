@@ -1,9 +1,9 @@
 ---
-import { Picture } from 'astro:assets';
-import BaseButton  from '../ui/BaseButton.astro';
-import leftHams from '../../assets/images/abthams_lft.png';
-import rightHams from '../../assets/images/abthams_rgt.png';
-import pipImg from '../../assets/images/abthams_pip.png';
+import { Picture } from "astro:assets";
+import BaseButton from "../ui/BaseButton.astro";
+import leftHams from "../../assets/images/abthams_lft.png";
+import rightHams from "../../assets/images/abthams_rgt.png";
+import pipImg from "../../assets/images/abthams_pip.png";
 
 interface Props {
   abt_title?: string;
@@ -35,19 +35,42 @@ const {
   <div class="container">
     <h2>{abt_title}</h2>
     <p>{abt_para.text} <span>{abt_para.highlight}</span></p>
-    <BaseButton  href={abt_btn.link} variant="primary" text={abt_btn.text} target="_blank"/>
+    <BaseButton
+      href={abt_btn.link}
+      variant="primary"
+      text={abt_btn.text}
+      target="_blank"
+    />
   </div>
   <div class="about-images">
-    <Picture src={leftHams} alt="The Code Monster mascot, left"  formats={['avif', 'webp']} />
-    <Picture src={pipImg} alt="pipe" aria-hidden="true" class="about-pipe"  formats={['avif', 'webp']} />
-    <Picture src={rightHams} alt="The Code Monster mascot, right"   formats={['avif', 'webp']}/>
+    <Picture
+      src={leftHams}
+      alt="The Code Monster mascot, left"
+      formats={["avif", "webp"]}
+    />
+    <Picture
+      src={pipImg}
+      alt="pipe"
+      aria-hidden="true"
+      class="about-pipe"
+      formats={["avif", "webp"]}
+    />
+    <Picture
+      src={rightHams}
+      alt="The Code Monster mascot, right"
+      formats={["avif", "webp"]}
+    />
   </div>
 </section>
 
-<style >
+<style is:global>
   .about-section {
     padding: 70px 0 100px;
-    background: linear-gradient(180deg, var(--color-crimson-0) 0%, var(--color-crimson-40) 60%);
+    background: linear-gradient(
+      180deg,
+      var(--color-crimson-0) 0%,
+      var(--color-crimson-40) 60%
+    );
     text-align: center;
     overflow: hidden;
   }
@@ -90,10 +113,10 @@ const {
     height: 25px;
     margin-bottom: 16px;
   }
-    .about-section picture:has(.about-pipe) img{
-      width: 100%;
-      height: 100%;
-    }
+  .about-section picture:has(.about-pipe) img {
+    width: 100%;
+    height: 100%;
+  }
 
   .about-section .about-images picture:has(img:not(.about-pipe)) {
     width: 600px;
@@ -104,54 +127,50 @@ const {
     .about-section .about-images {
       margin-top: -350px;
     }
-
-    .about-section .about-pipe {
-      height: 24px;
-    }
-
-    .about-section .about-images img:not(.about-pipe) {
-      width: 600px;
-    }
   }
 
-    @media (max-width: 1199px) {
-      .about-section .about-images img:not(.about-pipe) {
-          width: 300px;
-      }
-      .about-section p {
-          font-size: 30px;
-          line-height: 40px;
-      }
-      .about-section .about-images{
-        margin-top: -140px;
-      }
-      .about-section .about-pipe {
-          height: 12px;
-          margin-bottom: 4px;
-      }
+  @media (max-width: 1199px) {
+    .about-section .about-images picture:has(img:not(.about-pipe)) {
+      width: 300px;
     }
-
-    @media (max-width: 767px)  {
-      .about-section{
+    .about-section p {
+      font-size: 30px;
+      line-height: 40px;
+    }
+    .about-section .about-images {
+      margin-top: -140px;
+    }
+    .about-section picture:has(.about-pipe) {
+      height: 12px;
+      margin-bottom: 19px;
+    }
+  }
+  @media (max-width: 991px) {
+    .about-section picture:has(.about-pipe) {
+      margin-bottom: 12px;
+    }
+  }
+  @media (max-width: 767px) {
+    .about-section {
       padding: 40px 0;
     }
-    .about-section h2{
+    .about-section h2 {
       font-size: 16px;
       margin-bottom: 10px;
     }
-      .about-section p {
-          font-size: 20px;
-          line-height: 30px;
-      }
-      .about-section .about-images img:not(.about-pipe) {
-          width: 170px;
-      }
-      .about-section .about-images {
-          margin-top: -60px;
-      }
-      .about-section .about-pipe {
-          height: 6.5px;
-          margin-bottom: 2px;
-      }
+    .about-section p {
+      font-size: 20px;
+      line-height: 30px;
     }
+    .about-section .about-images picture:has(img:not(.about-pipe)) {
+      width: 170px;
+    }
+    .about-section .about-images {
+      margin-top: -60px;
+    }
+    .about-section picture:has(.about-pipe) {
+      height: 6.5px;
+      margin-bottom: 16px;
+    }
+  }
 </style>

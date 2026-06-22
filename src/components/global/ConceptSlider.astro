@@ -43,17 +43,24 @@ const slides = [
 </div>
 
 <script>
-  import 'swiper/css';
-  import 'swiper/css/navigation';
-
   const wrap = document.querySelector(".concept-slider-wrap");
-
   async function initConceptSlider() {
+    // ✅ Load CSS from public folder
+    await new Promise<void>((resolve) => {
+      if (document.querySelector('link[href="/swiper.min.css"]')) {
+        resolve();
+        return;
+      }
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'swiper/swiper.min.css';
+      link.onload = () => resolve();
+      document.head.appendChild(link);
+    });
     const [{ default: Swiper }, { Navigation, Autoplay }] = await Promise.all([
       import("swiper"),
       import("swiper/modules"),
     ]);
-
     new Swiper(".conceptSwiper", {
       modules: [Navigation, Autoplay],
       slidesPerView: 4,
@@ -73,6 +80,7 @@ const slides = [
       },
     });
   }
+
   if (wrap) {
     if ("IntersectionObserver" in window) {
       const observer = new IntersectionObserver(

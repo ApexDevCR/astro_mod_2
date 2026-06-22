@@ -1,9 +1,6 @@
 ---
 import { Picture } from "astro:assets";
 
-import "swiper/css";
-import "swiper/css/effect-cards";
-
 import banner_stars from "../../assets/icons/strs_grp.png";
 
 import slide1 from "../../assets/images/bnnr_sldr_card_1.png";
@@ -51,6 +48,15 @@ const slides = [
 
 <script>
   async function initBannerSlider() {
+    // ✅ Load from public folder - no CDN needed
+    await new Promise<void>((resolve) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'swiper/swiper.min.css';
+      link.onload = () => resolve();
+      document.head.appendChild(link);
+    });
+
     const [{ default: Swiper }, { EffectCards }] = await Promise.all([
       import("swiper"),
       import("swiper/modules"),
@@ -58,12 +64,10 @@ const slides = [
 
     new Swiper(".banner_card_slider", {
       modules: [EffectCards],
-
       effect: "cards",
       grabCursor: true,
       loop: false,
       speed: 600,
-
       cardsEffect: {
         perSlideOffset: 8,
         perSlideRotate: 6,

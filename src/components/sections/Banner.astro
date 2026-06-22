@@ -63,7 +63,8 @@ const {
           <p>{bnnr_desc}</p>
           <div class="bnnr_bttns">
             <BaseButton href={banner_btn1.link} text={banner_btn1.text} variant="primary" target=_blank/>
-            <BaseButton text={banner_btn2.text} scrollTo={banner_btn2.link} variant="secondary"/>
+            <BaseButton text={banner_btn2.text} variant="secondary" 
+            onclick="document.getElementById('book_card_sec')?.scrollIntoView({ behavior: 'smooth' })"/>
           </div>
         </div>
       </div>
@@ -80,7 +81,7 @@ const {
   </div>
 </section>
 
-<style>
+<style is:global>
   .bnnr_sec {
     padding: 120px 0 80px;
     background-repeat: no-repeat;
