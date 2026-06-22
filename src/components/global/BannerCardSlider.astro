@@ -32,36 +32,18 @@ const slides = [
 
 <script>
   // This carousel is above the fold, so we still want it interactive
-  // quickly — but we defer both the Swiper JS AND its CSS until idle
-  // time, so neither competes with the hero image for the main thread
-  // or the render-blocking critical path during the LCP window.
-  //
-  // The CSS file URLs are resolved at build time via Vite's `?url`
-  // suffix (a literal string import, not a side-effecting stylesheet
-  // import), then injected as real <link> elements only once this
-  // carousel actually initializes. This avoids two problems: (a) a
-  // static `import 'swiper/css'` would put this non-critical CSS in
-  // <head> as render-blocking, and (b) a dynamic `import('swiper/css')`
-  // is unreliable, since Vite may merge multiple swiper/css/* imports
-  // into a single combined chunk at build time, and the generated
-  // hashed filename can then mismatch what the dynamic import() call
-  // requests at runtime, producing 404s and breaking the carousel.
-  import swiperCssUrl from 'swiper/css?url';
-  import effectCardsCssUrl from 'swiper/css/effect-cards?url';
-
-  function loadSwiperCSS() {
-    if (document.querySelector('link[data-swiper-banner-css]')) return;
-    [swiperCssUrl, effectCardsCssUrl].forEach((href) => {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = href;
-      link.setAttribute('data-swiper-banner-css', '');
-      document.head.appendChild(link);
-    });
-  }
+  // quickly — but we defer the Swiper JS import/init to idle time so
+  // its parse/execute cost doesn't compete with the hero image for the
+  // main thread during the critical LCP window. The (small, ~8KB) CSS
+  // is imported statically below — dynamically importing CSS chunks
+  // at runtime is unreliable, since Vite may merge multiple swiper/css/*
+  // imports into a single combined chunk at build time, and the
+  // generated hashed filename can then mismatch what the dynamic
+  // import() call requests, causing 404s on the CSS chunk.
+  import 'swiper/css';
+  import 'swiper/css/effect-cards';
 
   async function initBannerSlider() {
-    loadSwiperCSS();
     const [{ default: Swiper }, { EffectCards }] = await Promise.all([
       import('swiper'),
       import('swiper/modules'),

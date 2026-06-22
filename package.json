@@ -12,7 +12,10 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@playform/compress": "^0.2.3",
     "astro": "^6.4.2",
+    "astro-compressor": "^1.3.0",
+    "astro-robots-txt": "^1.0.0",
     "swiper": "^12.2.0"
   },
   "devDependencies": {

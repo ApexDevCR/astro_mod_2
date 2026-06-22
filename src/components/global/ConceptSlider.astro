@@ -43,29 +43,12 @@ const slides = [
 </div>
 
 <script>
-  // Defer Swiper's JS AND its CSS until the carousel is about to enter
-  // the viewport, so this below-the-fold slider adds zero render-blocking
-  // bytes to the initial page load. See BannerCardSlider.astro for the
-  // full explanation of why `?url` + runtime <link> injection is used
-  // here instead of a static or dynamic CSS import.
-  import swiperCssUrl from 'swiper/css?url';
-  import navCssUrl from 'swiper/css/navigation?url';
-
-  function loadSwiperCSS() {
-    if (document.querySelector('link[data-swiper-concept-css]')) return;
-    [swiperCssUrl, navCssUrl].forEach((href) => {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = href;
-      link.setAttribute('data-swiper-concept-css', '');
-      document.head.appendChild(link);
-    });
-  }
+  import 'swiper/css';
+  import 'swiper/css/navigation';
 
   const wrap = document.querySelector(".concept-slider-wrap");
 
   async function initConceptSlider() {
-    loadSwiperCSS();
     const [{ default: Swiper }, { Navigation, Autoplay }] = await Promise.all([
       import("swiper"),
       import("swiper/modules"),
