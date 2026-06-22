@@ -10,16 +10,3 @@ const { class: className = '', ...props } = Astro.props;
     <BooksCard {...props} />
     <SellerPlatforms {...props} />
 </div>
-
-
-<style>
-    .books_itm_wrp + .books_itm_wrp{
-        margin-top: 120px;
-    }
-
-    @media (max-width: 767px)  {
-        .books_itm_wrp + .books_itm_wrp{
-            margin-top: 70px;
-        }
-    }
-</style>

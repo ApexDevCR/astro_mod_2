@@ -36,34 +36,3 @@ const vol1Props = {
     <BooksItems {...vol1Props}  />
   </div>
 </section>
-
-<style is:global>
-  .books-section {
-    padding: 100px 0 40px;
-    /* background: linear-gradient(180deg, var(--color-blue-0) 20%, var(--color-blue-20) 100%); */
-    background: linear-gradient(
-      180deg,
-      rgba(var(--color-accent-blue), 0) 15%,
-      rgba(var(--color-accent-blue), 0.2) 35%,
-      rgba(var(--color-accent-blue), 0.5) 70%,
-      rgba(var(--color-accent-blue), 0) 100%
-    );
-  }
-
-  /* ── Variant: Vol. 1 ─────────────────────────────────────── */
-  .books-section.books_sl_sec_2 {
-    background: linear-gradient(
-      180deg,
-      var(--color-blue-20) 28%,
-      var(--color-blue-40) 80%,
-      var(--color-blue-0) 100%
-    );
-  }
-
-  @media(max-width: 767px){
-    .books-section {
-        padding: 40px 0 20px;
-    }
-  }
-
-</style>
