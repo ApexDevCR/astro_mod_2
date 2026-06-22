@@ -1,81 +1,78 @@
 ---
-import { Picture } from 'astro:assets';
-import banner_stars from '../../assets/icons/strs_grp.png'
+import { Picture } from "astro:assets";
 
-import slide1 from '../../assets/images/bnnr_sldr_card_1.png';
-import slide2 from '../../assets/images/bnnr_sldr_card_2.png';
-import slide3 from '../../assets/images/bnnr_sldr_card_3.png';
+import "swiper/css";
+import "swiper/css/effect-cards";
+
+import banner_stars from "../../assets/icons/strs_grp.png";
+
+import slide1 from "../../assets/images/bnnr_sldr_card_1.png";
+import slide2 from "../../assets/images/bnnr_sldr_card_2.png";
+import slide3 from "../../assets/images/bnnr_sldr_card_3.png";
 
 const slides = [
-  { image: slide1, text: 'book 1' },
-  { image: slide2, text: 'book 2' },
-  { image: slide3, text: 'book 3'},
+  { image: slide1, text: "book 1" },
+  { image: slide2, text: "book 2" },
+  { image: slide3, text: "book 3" },
 ];
 ---
 
 <div class="banner-slider-wrap">
   <div class="swiper banner_card_slider">
     <div class="swiper-wrapper">
-      {slides.map((slide) => (
-        <div class="swiper-slide">
-          <div class="slide-card">
-              <Picture src={slide.image} alt={slide.text} formats={['avif', 'webp']} widths={[320, 450, 499]} sizes="(max-width: 767px) 320px, 450px" priority={true}/>
+      {
+        slides.map((slide) => (
+          <div class="swiper-slide">
+            <div class="slide-card">
+              <Picture
+                src={slide.image}
+                alt={slide.text}
+                formats={["avif", "webp"]}
+                widths={[450]}
+                sizes="450px"
+                loading="eager"
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </div>
+
   <div class="bnnr_strs">
-    <Picture src={banner_stars} loading="eager" formats={['avif', 'webp']} alt="stars group" />
+    <Picture
+      src={banner_stars}
+      alt="stars group"
+      formats={["avif", "webp"]}
+      loading="eager"
+    />
   </div>
 </div>
 
 <script>
-  // This carousel is above the fold, so we still want it interactive
-  // quickly — but we defer the Swiper JS import/init to idle time so
-  // its parse/execute cost doesn't compete with the hero image for the
-  // main thread during the critical LCP window. The (small, ~8KB) CSS
-  // is imported statically below — dynamically importing CSS chunks
-  // at runtime is unreliable, since Vite may merge multiple swiper/css/*
-  // imports into a single combined chunk at build time, and the
-  // generated hashed filename can then mismatch what the dynamic
-  // import() call requests, causing 404s on the CSS chunk.
-  import 'swiper/css';
-  import 'swiper/css/effect-cards';
-
   async function initBannerSlider() {
     const [{ default: Swiper }, { EffectCards }] = await Promise.all([
-      import('swiper'),
-      import('swiper/modules'),
+      import("swiper"),
+      import("swiper/modules"),
     ]);
 
-    new Swiper('.banner_card_slider', {
+    new Swiper(".banner_card_slider", {
       modules: [EffectCards],
-      effect: 'cards',
+
+      effect: "cards",
       grabCursor: true,
       loop: false,
+      speed: 600,
+
       cardsEffect: {
-        perSlideOffset: 1,
+        perSlideOffset: 8,
         perSlideRotate: 6,
-      },
-      breakpoints: {
-        767: {
-          cardsEffect: {
-            perSlideOffset: 1,
-            perSlideRotate: 10,
-          },
-        },
+        slideShadows: false,
       },
     });
   }
 
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(() => initBannerSlider(), { timeout: 1500 });
-  } else {
-    // Safari/older browsers: small timeout fallback so it still
-    // runs after the initial paint rather than blocking it.
-    setTimeout(initBannerSlider, 200);
-  }
+  window.addEventListener("load", initBannerSlider);
 </script>
 
 <style is:global>
