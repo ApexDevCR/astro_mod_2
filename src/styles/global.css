@@ -1,7 +1,9 @@
 /* ── Reset ───────────────────────────────────────────────── */
 
+/* Remove smooth scroll from html — use JS smooth scroll per-click instead
+   html-level smooth scroll causes scroll jank on mobile (especially iOS Safari) */
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; ← REMOVED: causes mobile jank */
 }
 
 *,
@@ -137,6 +139,8 @@ body {
   font-size: 18px;
   line-height: 1.5;
   font-weight: 400;
+  /* Prevent mobile overscroll jank */
+  overscroll-behavior: none;
 }
 
 /* ── Typography ──────────────────────────────────────────── */
@@ -223,6 +227,7 @@ h3 {
   isolation: isolate;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.03);
+  /* backdrop-filter removed on mobile — see @media below */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 1;
@@ -351,5 +356,12 @@ h3 {
     padding: 0 16px;
     font-size: 15px;
     letter-spacing: -0.02em;
+  }
+
+  /* Remove backdrop-filter on mobile — causes GPU stalls and scroll jank */
+  .btn-secondary {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.07);
   }
 }
