@@ -1,156 +1,19 @@
-
-Claude finished the response
-https://github.com/prosenjit-esolz/astro_mod_2  == check my full project, site is not smooth its very lagging sepcially on mobile section cut and then come while scroling, please check full project and make necesary changes and give me complete file
-
-11:52
-
-Fetched: GitHub - prosenjit-esolz/astro_mod_2
-Fetched: GitHub - prosenjit-esolz/astro_mod_2
-Let me fetch the actual source files:
-
-
-Searched the web
-Searched the web
-Let me try fetching the files directly from GitHub's raw content:
-
-
-Ran 7 commands
-Ran 7 commands
-Now I have a thorough understanding of the project. Let me identify and fix all the performance issues:
-
-
-Read remaining components
-Read remaining components
-Now I have a clear picture. Let me fix all the performance issues:
-
-Key problems identified:
-
-Mobile sections "cut and come" on scroll — caused by heavy drop-shadow filters, backdrop-filter: blur, large negative margins, and no will-change or GPU compositing hints on animated/transformed elements
-Banner monster image flashes — no smooth transition, margin-bottom: -420px causes layout reflows
-Swiper CSS loaded dynamically causing layout shifts
-Heavy CSS filter: drop-shadow(...) on every book image — very expensive on mobile GPUs
-backdrop-filter: blur(24px) on contact form — extremely GPU-heavy on mobile
-scroll-behavior: smooth on html — can cause jank on mobile, better to use JS-only
-No content-visibility: auto on below-fold sections
-animation on .center-icon every frame without will-change
-Large negative margins causing layout jank
-
-Ran 3 commands
-Ran 3 commands
-Now fix the ConceptSlider to improve autoplay performance and reduce jank:
-
-
-Write optimised ConceptSlider
-Write optimised ConceptSlider
-Now fix the BannerCardSlider with better initialization:
-
-
-Write optimised BannerCardSlider
-Write optimised BannerCardSlider
-Now fix the Banner section - the smooth scroll JS was inline onclick which forces reflow:
-
-
-Write optimised Banner with data-scroll-to instead of inline onclick
-Write optimised Banner with data-scroll-to instead of inline onclick
-Now fix the VolumeSection (it also uses inline onclick):
-
-
-Replace inline onclick in VolumeSection
-Replace inline onclick in VolumeSection
-Now also fix the BaseButton component to pass through data attributes properly:
-
-
-Read BaseButton
-Read BaseButton
-Good — BaseButton already spreads ...rest so data-scroll-to will pass through automatically. Now add the BaseLayout performance improvements:
-
-
-Write optimised BaseLayout
-Write optimised BaseLayout
-Now let's verify the fixed project builds cleanly:
-
-
-Ran 2 commands
-Ran 2 commands
-Build is clean. Now package the changed files:
-
-
-Ran a command, read a file
-Ran a command, read a file
-All 7 files are ready. Here's a full breakdown of every change and why it eliminates the mobile scroll jank:
-
-What was causing the lag & what was fixed
-🔴 Root causes of mobile scroll jank
-1. backdrop-filter: blur() on the contact form — This is the single biggest culprit on mobile. The browser has to blur everything behind the element on every scroll frame, which kills frame rate. Fix: removed entirely on ≤767px, replaced with a semi-transparent solid background that looks the same visually.
-
-2. filter: drop-shadow(...) with 4 layers on book images — Each multi-layer drop-shadow repaints on every scroll frame. The original code had 4 stacked drop-shadow() calls on every book cover and concept slider card. Fix: simplified to a single drop-shadow() on desktop, and filter: none on mobile (where you don't notice it).
-
-3. Multi-layer box-shadow on platform icons — Same problem, triggers repaint. Fix: simplified to a single box-shadow on desktop, none on mobile.
-
-4. html { scroll-behavior: smooth } global smooth scroll — On mobile (especially iOS Safari), this causes the entire page scroll to conflict with native momentum scrolling, creating jank and visual "cuts". Fix: removed from CSS. Scroll-to-section is now done via JS .scrollIntoView({ behavior: 'smooth' }) only for button clicks — this doesn't interfere with finger scrolling.
-
-5. Inline onclick on buttons calling scrollIntoView — Inline JS event handlers run synchronously during the click event and can trigger style recalculation. Fix: replaced with data-scroll-to attributes and a single delegated click listener, which is asynchronous-friendly.
-
-6. Missing will-change: transform and transform: translateZ(0) on animated/sliding elements — Without these, the browser repaints the parent stacking context (the whole page) on every animation frame. Fix: added GPU compositing hints to the slider, animated circle, and floating icon.
-
-7. Heavy pseudo-element filter: blur(200px) on bnr_cnct::before — A blur this large on a pseudo-element causes the browser to repaint a huge area on every scroll. Fix: disabled entirely on mobile.
-
-8. No content-visibility: auto on below-fold sections — The browser was fully rendering all sections on page load, even ones far below the fold. Fix: added content-visibility: auto + contain-intrinsic-size to About, ExploreSlider, CardSection, VolumeSection, and ContactForm. The browser now skips rendering them until they're near the viewport.
-
-📁 Drop each file into its original path:
-File	Path in your project
-global.css	src/styles/global.css
-components.css	src/styles/components.css
-Banner.astro	src/components/sections/Banner.astro
-BannerCardSlider.astro	src/components/global/BannerCardSlider.astro
-ConceptSlider.astro	src/components/global/ConceptSlider.astro
-VolumeSection.astro	src/components/sections/VolumeSection.astro
-BaseLayout.astro	src/layouts/BaseLayout.astro
-
-Components
-Code · CSS 
-
-Global
-Code · CSS 
-
-Banner
-ASTRO 
-
-Bannercardslider
-ASTRO 
-
-Conceptslider
-ASTRO 
-
-Volumesection
-ASTRO 
-
-Baselayout
-ASTRO 
-
-
-
-
-
-
-Claude is AI and can make mistakes. Please double-check cited sources.
-Bannercardslider · ASTRO
 ---
 import { Picture } from "astro:assets";
- 
+
 import banner_stars from "../../assets/icons/strs_grp.png";
- 
+
 import slide1 from "../../assets/images/bnnr_sldr_card_1.png";
 import slide2 from "../../assets/images/bnnr_sldr_card_2.png";
 import slide3 from "../../assets/images/bnnr_sldr_card_3.png";
- 
+
 const slides = [
   { image: slide1, text: "book 1" },
   { image: slide2, text: "book 2" },
   { image: slide3, text: "book 3" },
 ];
 ---
- 
+
 <div class="banner-slider-wrap">
   <div class="swiper banner_card_slider">
     <div class="swiper-wrapper">
@@ -164,7 +27,8 @@ const slides = [
                 formats={["avif", "webp"]}
                 widths={[450]}
                 sizes="450px"
-                priority={true}
+                loading="eager"
+                fetchpriority="high"
               />
             </div>
           </div>
@@ -172,17 +36,17 @@ const slides = [
       }
     </div>
   </div>
- 
+
   <div class="bnnr_strs">
     <Picture
       src={banner_stars}
       alt="stars group"
       formats={["avif", "webp"]}
-       priority={true}
+      loading="eager"
     />
   </div>
 </div>
- 
+
 <script>
   async function initBannerSlider() {
     // Load CSS synchronously if not already present
@@ -196,12 +60,12 @@ const slides = [
         document.head.appendChild(link);
       });
     }
- 
+
     const [{ default: Swiper }, { EffectCards }] = await Promise.all([
       import("swiper"),
       import("swiper/modules"),
     ]);
- 
+
     new Swiper(".banner_card_slider", {
       modules: [EffectCards],
       effect: "cards",
@@ -216,7 +80,7 @@ const slides = [
       },
     });
   }
- 
+
   // Use DOMContentLoaded instead of load so slider appears sooner,
   // but only after the DOM is ready (avoids flash on slow connections)
   if (document.readyState === "loading") {
@@ -225,4 +89,3 @@ const slides = [
     initBannerSlider();
   }
 </script>
- 
