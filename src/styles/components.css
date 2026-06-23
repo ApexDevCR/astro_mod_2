@@ -412,6 +412,7 @@ a.logo {
   /* Contain layout to prevent reflow from propagating */
   contain: layout style;
 }
+.bnnr_txts{position: relative;z-index: 1;}
 .bbnr_mons img { width: 540px; }
 .bnnr_sec_cnctwrp { display: flex; flex-wrap: wrap; }
 .bnr_cnct { flex: 0 0 auto; width: 750px; }
