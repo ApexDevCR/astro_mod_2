@@ -1,10 +1,3 @@
-/* ── Reset ───────────────────────────────────────────────── */
-
-/* Remove smooth scroll from html — use JS smooth scroll per-click instead
-   html-level smooth scroll causes scroll jank on mobile (especially iOS Safari) */
-html {
-  /* scroll-behavior: smooth; ← REMOVED: causes mobile jank */
-}
 
 *,
 ::before,
