@@ -3,43 +3,80 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import BaseButton from "../components/ui/BaseButton.astro";
 
 interface Props {
-    not_found_title?: string;
-    not_found_subtitle?: string;
-    not_found_btn?: {
-        text: string;
-        link: string;
-    };
-    not_found_para?: string;
+  not_found_title?: string;
+  not_found_subtitle?: string;
+  not_found_btn?: {
+    text: string;
+    link: string;
+  };
+  not_found_message?: string;
+  countdown_prefix?: string;
+  countdown_suffix?: string;
+  countdown_seconds?: number;
 }
 
 const {
-    not_found_title = "404",
-    not_found_subtitle = "page not found",
-    not_found_btn = {
-        text: "go back home",
-        link: "/",
-    },
-    not_found_para = "The page you're looking for doesn't exist or may have been moved. You'll be redirected to the homepage in 5 seconds.",
+  not_found_title = "404",
+  not_found_subtitle = "Page Not Found",
+  not_found_btn = {
+    text: "Go Back Home",
+    link: "/",
+  },
+  not_found_message =
+    "The page you're looking for doesn't exist or may have been moved.",
+  countdown_prefix = "You'll be redirected to the homepage in",
+  countdown_suffix = "seconds.",
+  countdown_seconds = 5,
 }: Props = Astro.props;
 ---
 
 <BaseLayout
-    title="Error 404 | Kevin Focke"
-    description="The page you're looking for couldn't be found."
-    noindex={true}
+  title="Error 404 | Kevin Focke"
+  description="The page you're looking for couldn't be found."
+  noindex={true}
 >
-    <div class="error_wrp">
-        <h1>{not_found_title}</h1>
-        <h2>{not_found_subtitle}</h2>
-        <BaseButton
-            href={not_found_btn.link}
-            text={not_found_btn.text}
-            variant="primary"
-        />
-        <p>
-            {not_found_para}
-        </p>
-    </div>
+  <div class="error_wrp">
+    <h1>{not_found_title}</h1>
+
+    <h2>{not_found_subtitle}</h2>
+
+    <p>{not_found_message}</p>
+
+    <p>
+      {countdown_prefix}
+      <strong> <span id="countdown">{countdown_seconds}</span> </strong>
+      {countdown_suffix}
+    </p>
+
+    <BaseButton
+      href={not_found_btn.link}
+      text={not_found_btn.text}
+      variant="primary"
+    />
+  </div>
+
+  <script
+    define:vars={{
+      redirectTo: not_found_btn.link,
+      countdownSeconds: countdown_seconds,
+    }}
+  >
+    let seconds = countdownSeconds;
+    const countdown = document.getElementById("countdown");
+
+    const timer = setInterval(() => {
+      seconds--;
+
+      if (countdown) {
+        countdown.textContent = seconds.toString();
+      }
+
+      if (seconds <= 0) {
+        clearInterval(timer);
+        window.location.href = redirectTo;
+      }
+    }, 1000);
+  </script>
 </BaseLayout>
 
 <style>
